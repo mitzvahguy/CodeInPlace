@@ -56,9 +56,7 @@ def dance_dance_baby():
             turn_around()
             pick_beeper()
             move()
-            #   POST Karel is facing east NOT on a beeper (in a world bigger that is more than 3 corners wide)
-            #   the if clause solves for the 3 world scenario...
-            #   because of turn_around() direction does not matter, should repeat
+            #   POST Karel is facing east... this should do the trick!
 
 if __name__ == "__main__":
     run_karel_program()
