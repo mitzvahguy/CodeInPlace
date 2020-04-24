@@ -1,0 +1,64 @@
+from karel.stanfordkarel import *
+
+"""
+File: MidpointKarelMenniStyle.py
+----------------------
+When you finish writing it, MidpointKarel should
+leave a beeper on the corner closest to the center of 1st Street
+(or either of the two central corners if 1st Street has an even
+number of corners).  Karel can put down additional beepers as it
+looks for the midpoint, but must pick them up again before it
+stops.  The world may be of any size, but you are allowed to
+assume that it is at least as tall as it is wide.
+"""
+
+def main():
+    # PRE   Karel is in 1,1 facing east
+    put_beeper()
+    if front_is_blocked():
+        turn_around
+        #   POST world of one corner width solved
+    else:
+        move()
+        if front_is_blocked():
+            turn_around()
+            move()
+            #   POST world of two corners width solved
+        else:
+            move_to_wall()
+            turn_around()
+            while no_beepers_present():
+                dance_dance_baby()
+            #   POST solves for worlds of all other widths
+
+def turn_around():
+    for i in range(2):
+        turn_left()
+
+def move_to_wall():
+    while front_is_clear():
+        move()
+        # POST Karel is facing east on far side (2x2)
+
+def dance_dance_baby():
+    #   PRE Karel is facing west in easternmost corner NOT on a beeper
+    while no_beepers_present():
+        put_beeper()
+        move()
+        if beepers_present():
+            pick_beeper()
+            turn_around()
+            move()
+        else:
+            move()
+            while no_beepers_present():
+                move()
+            turn_around()
+            pick_beeper()
+            move()
+            #   POST Karel is facing east NOT on a beeper (in a world bigger that is more than 3 corners wide)
+            #   the if clause solves for the 3 world scenario...
+            #   because of turn_around() direction does not matter, should repeat
+
+if __name__ == "__main__":
+    run_karel_program()
