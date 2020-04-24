@@ -1,0 +1,74 @@
+from karel.stanfordkarel import * 
+
+"""
+File: MidpointKarelSlopeMethod.py
+----------------------
+When you finish writing it, MidpointKarel should
+leave a beeper on the corner closest to the center of 1st Street
+(or either of the two central corners if 1st Street has an even
+number of corners).  Karel can put down additional beepers as it
+looks for the midpoint, but must pick them up again before it
+stops.  The world may be of any size, but you are allowed to
+assume that it is at least as tall as it is wide.
+"""
+
+def turn_right():
+    for i in range(3):
+        turn_left()
+
+def about_face():
+    for i in range(2):
+        turn_left()
+
+def run_and_rise():
+    #   PRE     Karel is facing east
+    while front_is_clear():
+        move()
+        if front_is_clear():
+            #   if front_is_clear_again() (this is the 2nd move if possible)
+            move()
+            turn_left()
+            move()
+            turn_right()
+            #   POST    Karel is facing east two units over and one unit up
+
+def backstep_to_mid():
+    #   PRE Karel is facing east
+    about_face()
+    #    Karel is facing west
+    while left_is_clear():
+        move()
+        turn_left()
+        move()
+        #   POST  Karel is facing south
+        turn_right()
+        #   POST Karel is facing west and now matches PRE of this while
+
+def return_to_start():
+    about_face()
+    move()
+    about_face()
+    #   POST    facing east
+
+def main():
+    if front_is_blocked():
+        put_beeper()
+        #   this solves a world that is 1 corner wide
+    else:
+        move()
+        if front_is_blocked():
+            put_beeper()
+            #   this solves a world that is 2 corners wide
+        else:
+            #   if the world is at least larger than 2 corners wide, we
+            #   now need to start from the beginning for it the code to scale easily
+            #   PRE facing east on 1st row 2nd column corner
+            return_to_start()
+            run_and_rise()
+            backstep_to_mid()
+            put_beeper()
+
+# There is no need to edit code beyond this point
+
+if __name__ == "__main__":
+    run_karel_program()
